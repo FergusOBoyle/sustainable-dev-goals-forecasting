@@ -4,6 +4,14 @@ def window_data2(data, lag=5,num_windows=3, step=1, predict_year=2010, target=No
     """
     Split up input feature dataframe into windowed data.
 
+    Efficiency improvment: If needed when the datasets get bigger the 3 above copy can be made faster.
+    It is writing overlapping windows from one dataframe to another so unless there is a major overhaul..
+    we probably need to hold on to one of the for loops but the other 2 can go:
+
+    1. (Straightforward) The inner-most for loop can be replaced by copying a block of 'lag' rows in one go. 
+    2. (a bit trickier) The outerr-most loop (countries) could be replaced by placing it inside of the..
+        split loop and copying one split each for all the countries in one go.
+
     Args:
         data: multiIndex dataframe of feature data with index of (country, year) and columns of the feature names.
         lag: size of window
