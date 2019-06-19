@@ -1,6 +1,6 @@
 import pandas as pd
 
-def window_data(data, lag=5,num_windows=3, step=1, predict_year=2010, target=None):
+def window_data(data, lag=5,num_windows=3, step=1, predict_year=2010, target=None, impute_func=None):
     """
     Split up input feature dataframe into windowed data.
 
@@ -22,6 +22,7 @@ def window_data(data, lag=5,num_windows=3, step=1, predict_year=2010, target=Non
         step: the delta between the windows. 1 will mean that there is maximum overlap between windows.
         predict_year: the year that we are targetting
         target: feature to be used as target
+        impute_func: function that does imputation
 
     Returns:
         training_data_regressors
@@ -54,15 +55,17 @@ def window_data(data, lag=5,num_windows=3, step=1, predict_year=2010, target=Non
     test_data_regressors = pd.DataFrame(index=test_regressors_index, columns=data.columns)
     test_data_targets = pd.DataFrame(index=test_target_index, columns=[target])
 
-    #PLACEHOLDER FOR FIRST PASS AT MISSING VALUE IMPUTATION
+    #Impute missing values
+    if impute_func is not None:
+        data_imp = impute_func(data, upto_year=predict_year-1 )
 
     #Fill in the target test set (this relates to the target year)
     idx = pd.IndexSlice
-    test_data_targets.loc[:, target] =  data.loc[idx[:,str(predict_year)], target].values
+    test_data_targets.loc[:, target] =  data_imp.loc[idx[:,str(predict_year)], target].values
 
     #Fill in the training test test
     test_data_regressors.loc[:,:] = \
-            data.loc[idx[:,str(predict_year-lag):str(predict_year-1)], :].values
+            data_imp.loc[idx[:,str(predict_year-lag):str(predict_year-1)], :].values
 
     #Now it's time to start moving back in time and filling out our training datasets
 
@@ -70,12 +73,15 @@ def window_data(data, lag=5,num_windows=3, step=1, predict_year=2010, target=Non
     for window in range(1,num_windows+1):
         year = predict_year - window
 
-        #PLACEHOLDER FOR FURTHER PASSES AT MISSING VALUE IMPUTATION
+        #Redo Imputation every time we move back a year
+        #This maintains the requirement not to use information from future years in our imputations 
+        if impute_func is not None:
+            data_imp = impute_func(data, upto_year=year-1 )
 
-        training_data_targets.loc[idx[:,window],:] = data.loc[idx[:,str(year)], target].values
+        training_data_targets.loc[idx[:,window],:] = data_imp.loc[idx[:,str(year)], target].values
 
         training_data_regressors.loc[idx[:,window,1:lag+1],:] = \
-                data.loc[idx[:,str(year-lag):str(year-1)], :].values
+                data_imp.loc[idx[:,str(year-lag):str(year-1)], :].values
 
     #According to pandas docs on multiIndex usage: For objects to be indexed and sliced effectively, they need to be sorted.
     training_data_regressors = training_data_regressors.sort_index()
@@ -85,5 +91,5 @@ def window_data(data, lag=5,num_windows=3, step=1, predict_year=2010, target=Non
     #unstacking the input features. Each row will now represent a set of features.
     training_data_regressors  = training_data_regressors.unstack(level=2)
     test_data_regressors  = test_data_regressors.unstack(level=1)
-        
+
     return training_data_regressors, training_data_targets, test_data_regressors, test_data_targets
