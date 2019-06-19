@@ -4,14 +4,6 @@ def window_data(data, lag=5,num_windows=3, step=1, predict_year=2010, target=Non
     """
     Split up input feature dataframe into windowed data.
 
-    Efficiency improvement: If needed when the datasets get bigger the 3 for loops belowcan be made faster.
-    It is copying overlapping windows from one dataframe to another so unless there is a major overhaul..
-    we probably need to hold on to one of the for loops but the other 2 could go:
-
-    1. (Straightforward) The inner-most for loop can be replaced by copying a block of 'lag' rows in one go. [Done]
-    2. (a bit trickier) The outer-most loop (countries) could be replaced by placing it inside of the..
-        split loop and copying one split each for all the countries in one go.
-
     Bug: Lags are wrong way around. For example if window width of 5 is specified (lag=5) then the lag=1 column..
         gives the 5th value while lag=5 gives the 1st value in the time window.
 
@@ -25,15 +17,14 @@ def window_data(data, lag=5,num_windows=3, step=1, predict_year=2010, target=Non
         impute_func: function that does imputation
 
     Returns:
-        training_data_regressors
-        training_data_targets
-        test_data_regressors
-        test_data_targets
+        data_regressors
+        data_targets
     """
 
     assert(target in list(data.columns.values)), "Target should be in the input dataframe"
 
     countries_in_data = list(data.index.levels[0]) 
+    idx = pd.IndexSlice
 
     #Create empty test and training dataframes
     regressors_index = pd.MultiIndex.from_product([countries_in_data,
@@ -45,32 +36,12 @@ def window_data(data, lag=5,num_windows=3, step=1, predict_year=2010, target=Non
                                                list(range(1,num_windows+1))],
                                               names=[u'country', u'window'])
 
-    test_regressors_index =  pd.MultiIndex.from_product([countries_in_data,
-                                                         list(range(1,lag+1))],
-                                                        names=[u'country', u'lag'])
+    data_regressors = pd.DataFrame(index=regressors_index, columns=data.columns)
+    data_targets = pd.DataFrame(index=target_index, columns=[target])
 
-    test_target_index = countries_in_data   
-    training_data_regressors = pd.DataFrame(index=regressors_index, columns=data.columns)
-    training_data_targets = pd.DataFrame(index=target_index, columns=[target])
-    test_data_regressors = pd.DataFrame(index=test_regressors_index, columns=data.columns)
-    test_data_targets = pd.DataFrame(index=test_target_index, columns=[target])
-
-    #Impute missing values
-    if impute_func is not None:
-        data_imp = impute_func(data, upto_year=predict_year-1 )
-
-    #Fill in the target test set (this relates to the target year)
-    idx = pd.IndexSlice
-    test_data_targets.loc[:, target] =  data_imp.loc[idx[:,str(predict_year)], target].values
-
-    #Fill in the training test test
-    test_data_regressors.loc[:,:] = \
-            data_imp.loc[idx[:,str(predict_year-lag):str(predict_year-1)], :].values
-
-    #Now it's time to start moving back in time and filling out our training datasets
 
     #Each increment of window represents moving back a year in time
-    for window in range(1,num_windows+1):
+    for window in range(num_windows):
         year = predict_year - window
 
         #Redo Imputation every time we move back a year
@@ -78,18 +49,16 @@ def window_data(data, lag=5,num_windows=3, step=1, predict_year=2010, target=Non
         if impute_func is not None:
             data_imp = impute_func(data, upto_year=year-1 )
 
-        training_data_targets.loc[idx[:,window],:] = data_imp.loc[idx[:,str(year)], target].values
+        data_targets.loc[idx[:,window+1],:] = data_imp.loc[idx[:,str(year)], target].values
 
-        training_data_regressors.loc[idx[:,window,1:lag+1],:] = \
+        data_regressors.loc[idx[:,window+1,1:lag+1],:] = \
                 data_imp.loc[idx[:,str(year-lag):str(year-1)], :].values
 
     #According to pandas docs on multiIndex usage: For objects to be indexed and sliced effectively, they need to be sorted.
-    training_data_regressors = training_data_regressors.sort_index()
-    training_data_targets = training_data_targets.sort_index()
-    test_data_targets = test_data_targets.sort_index()
+    data_regressors = data_regressors.sort_index()
+    data_targets = data_targets.sort_index()
 
     #unstacking the input features. Each row will now represent a set of features.
-    training_data_regressors  = training_data_regressors.unstack(level=2)
-    test_data_regressors  = test_data_regressors.unstack(level=1)
+    data_regressors  = data_regressors.unstack(level=2)
 
-    return training_data_regressors, training_data_targets, test_data_regressors, test_data_targets
+    return data_regressors, data_targets
