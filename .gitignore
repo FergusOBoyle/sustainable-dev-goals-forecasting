@@ -2,3 +2,4 @@
 data/
 world_bank_data
 out/
+__pycache__/
