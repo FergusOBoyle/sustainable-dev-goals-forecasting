@@ -1,6 +1,35 @@
 import pandas as pd
+import numpy as np
+from sklearn.impute import SimpleImputer
 
-def window_data(data, lag=5,num_windows=3, step=1, predict_year=2010, target=None, impute_func=None):
+def impute_data_interpolation(data, upto_year):
+    """
+        
+    """
+    data_local = data.copy()
+    
+    for country in data.index.levels[0]:
+        
+        
+        data_local.loc[(country):(country,str(upto_year)),:] = \
+            data_local.loc[(country):(country,str(upto_year)),:].interpolate(method='linear' ,limit_direction='both').values  
+    
+    
+    idx = pd.IndexSlice
+    
+    imp_mean = SimpleImputer(missing_values=np.nan, strategy='mean')
+    data_local.loc[idx[:,:str(upto_year)],:] = imp_mean.fit_transform(data_local.loc[idx[:,:str(upto_year)],:])
+    #data_local.loc[idx[:,:str(upto_year)],:] = imputed_subset
+    
+    #Set remaining missing values to 0. (This should be replaced by mean imputation ASAP)
+    #idx = pd.IndexSlice
+    #data_local.loc[idx[:, :str(upto_year)], :] = data_local.loc[idx[:, :str(upto_year)], :].fillna(0) 
+    
+    return data_local
+
+
+
+def window_data(data, lag=5,num_windows=3, step=1, predict_year=2010, target=None, impute_type=None):
     """
     Split up input feature dataframe into windowed data.
 
@@ -14,14 +43,19 @@ def window_data(data, lag=5,num_windows=3, step=1, predict_year=2010, target=Non
         step: the delta between the windows. 1 will mean that there is maximum overlap between windows.
         predict_year: the year that we are targetting
         target: feature to be used as target
-        impute_func: function that does imputation
+        impute_type: must be one of ['interpolation'] or None
 
     Returns:
         data_regressors
         data_targets
     """
-
+    assert(impute_type in ['interpolation', None]), "impute_type must be one of  ['interpolation'] or none"
     assert(target in list(data.columns.values)), "Target should be in the input dataframe"
+
+    if impute_type == 'interpolation':
+        impute_func = impute_data_interpolation
+    else:
+        impute_func = None
 
     countries_in_data = list(data.index.levels[0]) 
     idx = pd.IndexSlice
@@ -48,6 +82,8 @@ def window_data(data, lag=5,num_windows=3, step=1, predict_year=2010, target=Non
         #This maintains the requirement not to use information from future years in our imputations 
         if impute_func is not None:
             data_imp = impute_func(data, upto_year=year-1 )
+        else:
+            data_imp = data
 
         data_targets.loc[idx[:,window+1],:] = data_imp.loc[idx[:,str(year)], target].values
 
