@@ -39,13 +39,15 @@ LICENSE: License file
 
 1. Download Anaconda from [here](https://www.anaconda.com/distribution/).
 2. Install Anaconda using [these](https://docs.anaconda.com/anaconda/install/) instructions.
-3. Create a new environment in the Anaconda Shell: >conda create -n my_new_env --file environment.yml.
-4. Switch to the new environment: >conda activate my_new_env.
+3. Open the Anaconda shell.
+3. Within the Anaconda shell, change directory to the root directory of the local sustainable-dev-goals-forecasting repo.
+4. Create a new environment in the Anaconda Shell: >conda env create -n my_new_env --file environment.yml.
+5. Switch to the new environment: >conda activate my_new_env.
 
 ### Running Jupyter Notebook
 
-1. The jupyter notebooks of this project can be accessed by launching Jupyter Notebook from the Anaconda Shell (>jupyter notebook). 
-2. Then, within the Jupyter Notebook App, navigate to the location of the sustainable-dev-goals-forecasting folder and open the required notebooks.
+1. In the Anaconda shell, if you are not already in the root directory of the local sustainable-dev-goals-forecasting repo, change directory to there now.
+2. Launch Jupyter Notebook from the Anaconda shell (>jupyter notebook). The Jupyter Notebook app will open up in a web browser. 
 
 ### Reading data,preprocessing, and execution of the predictive models
 
