@@ -1,5 +1,5 @@
-# sustainable-dev-goals-forecasting
-Time-series forecasting using machine learning methods. 
+# Poverty Prediction using Machine Learning Methods 
+Time-series forecasting of World Development Indicator (WDI) for poverty using machine learning methods. 
 
 In 2014 the UN called for a data revolution to put the best available tools and methods to work in service of achieving the Sustainable Development Goals (SDGs). Here, we attempt to use machine learning to forecast one of the indicators for SDG 1, it's objective being to "end poverty in all it's forms everywhere".
 
