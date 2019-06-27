@@ -1,5 +1,5 @@
 # sustainable-dev-goals-forecasting
-Time-series forecasting using machine learning methods.
+Time-series forecasting using machine learning methods. 
 
 In 2014 the UN called for a data revolution to put the best available tools and methods to work in service of achieving the Sustainable Development Goals (SDGs). Here, we attempt to use machine learning to forecast one of the indicators for SDG 1, it's objective being to "end poverty in all it's forms everywhere".
 
@@ -64,4 +64,13 @@ The required packages are specified in the environment.yml file. The environment
 4. Extract files from the donloaded folder.
 5. Place WDIData.csv into a data/ subfolder of your local repo.
 
- 
+## Todo
+
+* Try Random forest model  
+* Try XGBoost  
+* Add more historical values of the target  
+* Add historical values of the target residual  as a new feature  
+* Try more advanced methods of imputation using mtsdi package in R  
+* Try Feature reduction using Foreward selection algorithm    
+* Try some classical time-series forecasting algorithms  
+
