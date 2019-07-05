@@ -19,10 +19,12 @@ The required packages are specified in the environment.yml file. The environment
 
 * README.md: This file    
 * notebooks/clean_input_streams.ipynb: Data Preparation before modelling   
-* notebooks/linear_regression_predictor.ipynb: Linear Models   
+* notebooks/linear_regression_predictor.ipynb: Linear Models 
+* notebooks/exponential_smoothing.ipynb: Classical Holt's Method
+* notebooks/tree_based_predictor.ipynb: Random forest method and gradient smoothing
 * notebooks/naive_predictor.ipynb: Naive Prediction Model  
 * notebooks/data_gathering/data_collection.ipynb: World Bank API interface   
-* notebooks/data_gathering/world_bank_bulk_csv.ipynb: Reading from World Bank csv file   
+* notebooks/data_gathering/world_bank_bulk_csv.ipynb: Reading from World Bank csv file 
 * utils/evaluate.py : utilities for evaluating models  
 * utils/missing.py: utilities related to missing values  
 * utils/preprocess.py: utiltiies for preprocessing of data before modelling   
