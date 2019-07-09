@@ -67,13 +67,10 @@ The required packages are specified in the environment.yml file. The environment
 4. Extract files from the donloaded folder.
 5. Place WDIData.csv into a data/ subfolder of your local repo.
 
-## Todo
+## Possible next steps
 
-* Try Random forest model  
-* Try XGBoost  
-* Add more historical values of the target  
-* Add historical values of the target residual  as a new feature  
+* Try other libraries that include tree-based models that cope with sparse input data (H20?) 
 * Try more advanced methods of imputation using mtsdi package in R  
-* Try Feature reduction using Foreward selection algorithm    
-* Try some classical time-series forecasting algorithms  
+* Try feature reduction using the foreward selection algorithm    
+* Try  more classical time-series forecasting algorithms. For example, the dynamic method described in chapter 9 of *Forecasting: Principles and Practice*  
 
