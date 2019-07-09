@@ -3,7 +3,7 @@ Time-series forecasting of World Development Indicator (WDI) for poverty using m
 
 In 2014 the UN called for a data revolution to put the best available tools and methods to work in service of achieving the Sustainable Development Goals (SDGs). Here, we attempt to use machine learning to forecast one of the indicators for SDG 1, it's objective being to "end poverty in all it's forms everywhere".
 
-Blog post with details and walkthrough of the code can be found [here](https://medium.com/@fergus.oboyle/can-machine-learning-be-used-to-forecast-poverty-c7a54bbd6e6c)
+Blog posts with details and walkthrough of the code can be found [here](https://medium.com/@fergus.oboyle/can-machine-learning-be-used-to-forecast-poverty-c7a54bbd6e6c) and [here](https://medium.com/@fergus.oboyle/classical-time-series-vs-machine-learning-methods-80290850bd5b)
 
 In this project, we will try to forecast the WDI "Poverty headcount ratio at $1.90 a day (2011 PPP) (% of population)". This is one of the principal indicators used to measure progress towards meeting the first Sustainable Development Goal. We will forecast the indicator for the year 2010 and use data up to and including the year 2009 from all indicators (including the target indicator) using machine learning techniques. By choosing a target year (i.e. 2010) for which we have data, allows us to measure our predictions against the actual reported values and measure the success (or failure) of our algorithms. Unfortunately, due to a lot of missing data in the WDI dataset, we only have a recorded measurement for the target WDI in 2010 for a subset of countries. This will be discussed more in the blog. The missing data can be seen in the following map:
 
@@ -22,6 +22,7 @@ The required packages are specified in the environment.yml file. The environment
 * notebooks/linear_regression_predictor.ipynb: Linear Models 
 * notebooks/exponential_smoothing.ipynb: Classical Holt's Method
 * notebooks/tree_based_predictor.ipynb: Random forest method and gradient smoothing
+* notebooks/xgboost_predictor.ipynb: XGBoost predictor
 * notebooks/naive_predictor.ipynb: Naive Prediction Model  
 * notebooks/data_gathering/data_collection.ipynb: World Bank API interface   
 * notebooks/data_gathering/world_bank_bulk_csv.ipynb: Reading from World Bank csv file 
