@@ -5,9 +5,13 @@ In 2014 the UN called for a data revolution to put the best available tools and 
 
 Blog posts with details and walkthrough of the code can be found [here](https://medium.com/@fergus.oboyle/can-machine-learning-be-used-to-forecast-poverty-c7a54bbd6e6c) and [here](https://medium.com/@fergus.oboyle/classical-time-series-vs-machine-learning-methods-80290850bd5b).
 
+Tableau dashboard exploring the correlations between the WDI variables and the target can be found [here](https://public.tableau.com/views/WorldDevelopmentIndicators_15628521058330/Dashboard1?:embed=y&:display_count=yes&publish=yes&:origin=viz_share_link). It's best viewed in full screen mode.
+
 In this project, I will forecast the WDI "Poverty headcount ratio at $1.90 a day (2011 PPP) (% of population)". This is one of the principal indicators used to measure progress towards meeting the first Sustainable Development Goal. I will forecast the indicator for the year 2010 and use data up to and including the year 2009 from all indicators (including the target indicator) using machine learning techniques. By choosing a target year (i.e. 2010) for which there is data, allows measurement of the predictions against the actual reported values and, therefore, the measurement of the success (or failure) of our algorithms. Unfortunately, due to a lot of missing data in the WDI dataset, there is only a recorded measurement for the target WDI in 2010 for a subset of countries. This will be discussed more in the blog. The degree of  missing data can be seen in the following map:
 
 ![Target Variable for Target year](world_image.png)
+
+
 
 ## Packages
 
