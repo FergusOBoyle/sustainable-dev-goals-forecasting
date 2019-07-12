@@ -21,6 +21,7 @@ dependencies:
   - decorator=4.3.2=py37_0
   - entrypoints=0.3=py37_0
   - freetype=2.9.1=ha9979f8_1
+  - h2o=3.18.0.2=0
   - icc_rt=2019.0.0=h0cc432a_1
   - icu=58.2=ha66f8fd_1
   - idna=2.8=py37_0
@@ -65,6 +66,7 @@ dependencies:
   - notebook=5.7.4=py37_0
   - numpy=1.15.4=py37h19fb1c0_0
   - numpy-base=1.15.4=py37hc3f5095_0
+  - openjdk=8.0.152=h7382acf_1
   - openssl=1.1.1c=he774522_1
   - pandas=0.24.1=py37ha925a31_0
   - pandas-datareader=0.7.0=py37_0
@@ -167,6 +169,7 @@ dependencies:
     - tensorflow-estimator==1.13.0
     - termcolor==1.1.0
     - werkzeug==0.15.4
+    - xgboost==0.90
     - zipp==0.5.1
 prefix: C:\Users\Fergus\.conda\envs\sdgs-env
 
