@@ -42,7 +42,9 @@ It is quite likely in our case that the majority of the predictors are unrelated
 lasso is so effective. The following plot shows the results from the tuning of the alpha parameter during the cross-validation 
 training process of the lasso model:
 
-![Target Variable for Target year](RMSE_lasso_alpha.png)
+<p align="center">
+  <img src="RMSE_lasso_alpha.png?raw=true" alt="Lasso alpha tuning"/>
+</p>
 
 The green line marks the point at which the lowest RMSE was recorded. This point corresponds to an alpha value of 0.43.
 One surprising thing to note regarding the cross-validation training of the lasso was that the model produced using standard k-folds cross-validation generalized better than the model from the time-series cross-validation method.
