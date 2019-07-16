@@ -11,7 +11,41 @@ In this project, I will forecast the WDI "Poverty headcount ratio at $1.90 a day
 
 ![Target Variable for Target year](world_image.png)
 
+## Results
 
+The predicted value for our target poverty metric is compared with the recorded value for all countries that have a recorded value, for the target year.
+
+The following table shows results commparing root mean squared error for different methods.
+
+| Method | RMSE score |
+| ------ | -----------|
+| Naive  | 4.77 |
+| Holt's exponential smoothing | 4.79 |
+| OLS linear regression | 7.40 |
+| Ridge regression | 7.07 |
+| Lasso regression | 4.05 |
+| Random forest | 5.36 |
+| XGBoost | 5.14 |
+| XGBoost (No imputation) | 3.11 |
+
+XGBoost without any attempt to impute data prior to training turned out to be by far the most successful model I tried. I did some hand-tuning on parameters for XGBoost to obtain the RMSE score of 3.11.
+
+Interestingly, a key parameter for success with XGBoost was tuning of reg_lambda. This is the L2 regularisation term, similar to what is used in ridge linear regression. Therefore, our two best performing models, XGBoost and lasso both perform regularisation.
+
+It is perhaps not a surprise that lasso regression performed so well and better than ridge regression. According to *An Introduction to Statistical Learning*:
+
+> In general, one might expect the lasso to perform better in a setting where a relatively small number of predictors have substantial 
+> coefficients, and the remaining predictors have coefficients that are very small or that equal zero. Ridge regression will perform 
+> better when the response is a function of many predictors, all with coefficients of roughly equal size.
+
+It is quite likely in our case that the majority of the predictors are unrelated to the target variable and this might explain why 
+lasso is so effective. The following plot shows the results from the tuning of the alpha parameter during the cross-validation 
+training process of the lasso model:
+
+![Target Variable for Target year](RMSE_lasso_alpha.png)
+
+The green line marks the point at which the lowest RMSE was recorded. This point corresponds to an alpha value of 0.43.
+One surprising thing to note regarding the cross-validation training of the lasso was that the model produced using standard k-folds cross-validation generalized better than the model from the time-series cross-validation method.
 
 ## Packages
 
