@@ -15,7 +15,7 @@ In this project, I will forecast the WDI "Poverty headcount ratio at $1.90 a day
 
 The predicted value for our target poverty metric is compared with the recorded value for all countries that have a recorded value, for the target year.
 
-The following table shows results commparing root mean squared error for different methods.
+The following table shows results comparing root mean square error for different methods.
 
 | Method | RMSE score |
 | ------ | -----------|
