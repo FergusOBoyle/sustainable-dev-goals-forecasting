@@ -49,6 +49,11 @@ training process of the lasso model:
 The green line marks the point at which the lowest RMSE was recorded. This point corresponds to an alpha value of 0.43.
 One surprising thing to note regarding the cross-validation training of the lasso was that the model produced using standard k-folds cross-validation generalized better than the model from the time-series cross-validation method.
 
+The two most significant findings from the investigation were:
+
+* XGBoost and other methods that employed regularisation to reduce model variance performed best.
+* XGBoost's sparsity aware spilt finding algorithm handled missing values in a way that outperformed imputation methods.
+
 ## Packages
 
 The code can be run from a set of Jupyter notebooks (in the notebooks directory) with support from some python ultily files (in the utils directory). Installing Anaconda and running jupyter from it is the easiest way to go (see below).
